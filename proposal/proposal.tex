@@ -1,0 +1,72 @@
+\documentclass[UTF8]{ctexbeamer}
+\usepackage[T1]{fontenc}
+
+\usetheme[compress]{Berlin}
+\setbeamertemplate{page number in head/foot}[framenumber]
+%Information to be included in the title page:
+\title{Rust 内核的模糊测试研究}
+\subtitle{毕业设计开题报告}
+\author{任乐图}
+\institute{清华大学计算机科学与技术系}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}
+    \frametitle{Outline}
+    \tableofcontents
+\end{frame}
+
+\section{研究背景}
+\begin{frame}
+    \frametitle{研究背景}
+    对于 C 编写 Linux 内核，测试的主要手段是 Syzkaller，进行覆盖率指导的模糊测试。而对于使用 Rust 编写的内核则没有很好的测试方法。
+\end{frame}
+
+\begin{frame}
+    \frametitle{Syzkaller}
+    Syzkaller 是一款覆盖率指导的模糊测试工具，在提供系统调用描述以及内核覆盖率信息后，可以有效测试内核。目前最先进的内核模糊测试研究几乎都与 Syzkaller 有关，如受 Syzkaller 启发的 Healer\cite{healer}，基于 Syzkaller 的 StateFuzz\cite{statefuzz}，PrIntFuzz\cite{printfuzz} 等。
+\end{frame}
+
+\section{选题内容}
+\begin{frame}
+    \frametitle{选题内容}
+    测试功能相比 Linux 简化的、使用 Rust 编写的内核，尽可能多地发现 Bug。
+
+    Bug 有两种：
+    \begin{itemize}
+        \item 内核崩溃；
+        \item 内核的行为与标准（Linux）不一致。
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{实验设计}
+    \begin{itemize}
+        \item 假设待测试的内核与 Linux 在输入相同时，代码覆盖率相同，则先用 Syzkaller 测试 Linux，得到测试数据。使待测试内核也运行同样的数据，比较两边的结果。
+        \item 使 Syzkaller 直接测试待测试内核。主要的困难是待测试内核可能没有 KCov，以及 Rust 得到覆盖率的方法与 C 的有区别。
+    \end{itemize}
+\end{frame}
+
+\section{进度安排}
+\begin{frame}
+    \begin{itemize}
+        \item 1月12日，毕设开题。
+        \item 1月12日至2月5日，熟悉 Syzkaller，使用 Syzkaller 测试 Linux。
+        \item 2月5日至中期，使用 Linux 的测试数据测试待测试内核。
+        \item 中期至结题，直接使用 Syzkaller 测试待测试内核。\cite{healer}
+    \end{itemize}
+\end{frame}
+
+\section{参考文献}
+\begin{frame}
+    \tiny\bibliographystyle{acm}
+    \bibliography{ref}
+\end{frame}
+
+\end{document}
+
